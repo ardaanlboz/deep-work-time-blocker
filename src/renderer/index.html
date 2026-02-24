@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DeepWork</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="topbar">
+        <div>
+          <h1>DeepWork</h1>
+          <div class="subtitle">Control panel</div>
+        </div>
+        <div id="globalStatus" class="badge">Inactive</div>
+      </header>
+
+      <section id="recoveryBanner" class="panel warning hidden">
+        <h2>Recovery</h2>
+        <p>A deep work session was active last time. Do you want to restore browsing now?</p>
+        <button id="restoreNowButton" class="danger">Restore Now</button>
+      </section>
+
+      <section class="panel">
+        <h2>Session</h2>
+        <div class="grid two">
+          <div>
+            <p><strong>Status:</strong> <span id="sessionStatus">Inactive</span></p>
+            <p><strong>Time remaining:</strong> <span id="timeRemaining">00:00:00</span></p>
+          </div>
+          <div class="actions">
+            <button id="startSessionButton" class="primary">Start Session</button>
+            <button id="stopSessionButton" class="danger">Stop Session</button>
+          </div>
+        </div>
+
+        <h3>Session Settings</h3>
+        <div class="grid three">
+          <label>
+            Session Minutes
+            <input id="sessionMinutesInput" type="number" min="1" max="600" />
+          </label>
+          <label>
+            Lock Stop For First (min)
+            <input id="lockStopMinutesInput" type="number" min="0" max="600" />
+          </label>
+          <label class="checkbox">
+            <input id="strictModeInput" type="checkbox" />
+            Strict mode
+          </label>
+        </div>
+        <p><strong>Stop lock:</strong> <span id="stopLockStatus">Not locked</span></p>
+        <button id="saveSettingsButton">Save Settings</button>
+      </section>
+
+      <section class="panel">
+        <h2>Enforcement Presets</h2>
+        <div class="inline">
+          <select id="profileSelect"></select>
+          <button id="applyProfileButton">Apply</button>
+          <button id="saveProfileButton">Save Current as Preset</button>
+          <button id="deleteProfileButton" class="danger">Delete</button>
+        </div>
+        <p class="muted">Presets save your current settings and lists (websites/apps/allowed apps).</p>
+      </section>
+
+      <section class="panel">
+        <h2>Websites to Block</h2>
+        <div class="inline">
+          <input id="domainInput" placeholder="instagram.com or https://instagram.com/explore" />
+          <button id="addDomainButton">Add</button>
+        </div>
+        <ul id="blocklist" class="list"></ul>
+      </section>
+
+      <section class="panel">
+        <h2>Apps to Block (macOS)</h2>
+        <div class="inline">
+          <input id="appInput" placeholder="Safari or /Applications/Safari.app" />
+          <button id="addAppButton">Add App</button>
+          <button id="pickAppButton">Choose App</button>
+        </div>
+        <ul id="appBlocklist" class="list"></ul>
+      </section>
+
+      <section class="panel">
+        <h2>Allowed Apps (Block All Others)</h2>
+        <div class="inline">
+          <label class="checkbox">
+            <input id="allowOnlyAppsInput" type="checkbox" />
+            Enable allow-only mode
+          </label>
+          <label>
+            Warning (sec)
+            <input id="appCloseWarningSecondsInput" class="input-small" type="number" min="0" max="60" />
+          </label>
+        </div>
+        <p id="allowOnlyAppsHelp">When enabled, DeepWork will close any running app that is not in this list. DeepWork and macOS essentials are always allowed.</p>
+        <div id="allowOnlyAppsControls" class="inline">
+          <input id="allowedAppInput" placeholder="VS Code or /Applications/Visual Studio Code.app" />
+          <button id="addAllowedAppButton">Add Allowed</button>
+          <button id="pickAllowedAppButton">Choose App</button>
+        </div>
+        <ul id="allowedAppList" class="list"></ul>
+      </section>
+
+      <section class="panel">
+        <h2>Reminder Video File</h2>
+        <div class="grid two">
+          <input id="videoUrlInput" placeholder="/Users/you/Videos/focus.mp4" />
+          <div class="actions">
+            <button id="pickVideoButton">Choose File</button>
+            <button id="saveVideoButton">Save Path</button>
+            <button id="testReminderButton">Test Reminder Popup</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Session Notes</h2>
+        <div class="muted">Session <span id="notesSessionNumber">-</span></div>
+        <textarea id="notesInput" rows="6" placeholder="Write notes for this session..."></textarea>
+        <div class="actions" style="margin-top: 10px">
+          <button id="saveNotesButton">Save Notes</button>
+        </div>
+        <h3>Notes History</h3>
+        <ul id="notesHistory" class="list"></ul>
+      </section>
+
+      <section class="panel">
+        <h2>Safety & Diagnostics</h2>
+        <div class="actions">
+          <button id="restoreBackupButton">Restore from Backup</button>
+          <button id="openLogsButton">Open Log File</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Activity Report</h2>
+        <div id="activityReport" class="muted">No sessions recorded yet.</div>
+      </section>
+
+      <section id="feedbackPanel" class="panel hidden"></section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
