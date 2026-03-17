@@ -9,13 +9,14 @@ const {
 const { setConfig } = require("./config");
 const { logInfo, logError } = require("./logger");
 const { listProfiles, upsertProfileByName } = require("./profiles");
+const { registerMomentumIpcHandlers } = require("./momentum/ipc");
 
 let mainWindow = null;
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({
-    width: 980,
-    height: 760,
+    width: 1100,
+    height: 800,
     minWidth: 920,
     minHeight: 700,
     autoHideMenuBar: true,
@@ -60,6 +61,7 @@ app.whenReady().then(() => {
   }
   createMainWindow();
   const ipc = registerIpcHandlers(mainWindow);
+  registerMomentumIpcHandlers(mainWindow);
   setStatusListener((status) => ipc.sendStatusUpdate(status));
   resumeOrRecoverIfNeeded();
 

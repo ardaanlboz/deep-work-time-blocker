@@ -1,5 +1,11 @@
 const api = window.deepworkApi;
 const C = api.channels;
+const M = api.momentum;
+
+// Navigation to Life Momentum
+document.getElementById("navMomentum").addEventListener("click", () => {
+  api.invoke(M.NAVIGATE, { page: "momentum" });
+});
 
 const el = {
   globalStatus: document.getElementById("globalStatus"),

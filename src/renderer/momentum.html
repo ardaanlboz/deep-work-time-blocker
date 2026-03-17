@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Life Momentum</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./momentum.css" />
+  </head>
+  <body>
+    <main class="container momentum-app">
+      <!-- Top Navigation -->
+      <header class="topbar">
+        <div class="nav-left">
+          <button id="navBack" class="nav-btn" title="Back to Focus">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Focus
+          </button>
+          <div class="nav-divider"></div>
+          <div>
+            <h1>Life Momentum</h1>
+            <div class="subtitle">Performance Lab</div>
+          </div>
+        </div>
+        <div class="nav-right">
+          <div id="navTabs" class="nav-tabs">
+            <button class="nav-tab active" data-tab="today">Today</button>
+            <button class="nav-tab" data-tab="calendar">Calendar</button>
+            <button class="nav-tab" data-tab="checkin">Check-In</button>
+            <button class="nav-tab" data-tab="analytics">Analytics</button>
+            <button class="nav-tab" data-tab="advisor">Advisor</button>
+          </div>
+          <div id="slipBadge" class="badge slip-badge hidden">SLIP MODE</div>
+        </div>
+      </header>
+
+      <!-- TAB: Today Command Center -->
+      <div id="tabToday" class="tab-content active">
+        <section class="panel command-center">
+          <div class="cc-header">
+            <div class="cc-date">
+              <div id="ccDateDisplay" class="cc-date-text"></div>
+              <div id="ccTrendNote" class="cc-trend muted"></div>
+            </div>
+            <div class="cc-score-ring">
+              <div id="ccScoreValue" class="score-value">--</div>
+              <div class="score-label">Momentum</div>
+            </div>
+            <div id="ccWonDay" class="cc-won-day">
+              <span class="won-icon">--</span>
+              <span class="won-text">No data</span>
+            </div>
+          </div>
+
+          <div class="cc-grid">
+            <div class="cc-card">
+              <div class="cc-card-label">Critical Outcomes</div>
+              <div id="ccOutcomes" class="cc-outcomes">
+                <div class="empty-state-small">No outcomes set</div>
+              </div>
+            </div>
+
+            <div class="cc-card">
+              <div class="cc-card-label">Task Progress</div>
+              <div id="ccTaskProgress" class="cc-progress">
+                <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                <span class="progress-text">0/0</span>
+              </div>
+              <div class="cc-mini-stats">
+                <div class="mini-stat">
+                  <span class="mini-label">Deep Work</span>
+                  <span id="ccDeepWork" class="mini-value">0h / 4h</span>
+                </div>
+                <div class="mini-stat">
+                  <span class="mini-label">Revenue Work</span>
+                  <span id="ccRevenueWork" class="mini-value">0h / 3h</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="cc-card">
+              <div class="cc-card-label">Recovery</div>
+              <div class="cc-mini-stats">
+                <div class="mini-stat">
+                  <span class="mini-label">Sleep</span>
+                  <span id="ccSleep" class="mini-value">--</span>
+                </div>
+                <div class="mini-stat">
+                  <span class="mini-label">Workout</span>
+                  <span id="ccWorkout" class="mini-value">--</span>
+                </div>
+                <div class="mini-stat">
+                  <span class="mini-label">Caffeine</span>
+                  <span id="ccCaffeine" class="mini-value">--</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick actions on today tab -->
+        <div class="grid two">
+          <section class="panel">
+            <h2>Today's Tasks</h2>
+            <div id="todayTaskList" class="task-list"></div>
+            <div class="inline" style="margin-top:10px">
+              <input id="quickTaskInput" placeholder="Add a task..." />
+              <select id="quickTaskPriority" style="width:auto">
+                <option value="Must Do">Must Do</option>
+                <option value="Should Do" selected>Should Do</option>
+                <option value="Nice to Do">Nice to Do</option>
+                <option value="Delegate">Delegate</option>
+              </select>
+              <button id="quickTaskAdd" class="primary">Add</button>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2>Quick Check-In</h2>
+            <div id="quickCheckin" class="quick-checkin">
+              <div class="qc-row">
+                <label>Sleep hours <input id="qcSleep" type="number" step="0.5" min="0" max="14" placeholder="7.5"/></label>
+                <label>Sleep quality <input id="qcSleepQuality" type="number" min="1" max="10" placeholder="1-10"/></label>
+              </div>
+              <div class="qc-row">
+                <label>Deep work hrs <input id="qcDeepWork" type="number" step="0.5" min="0" max="16" placeholder="4"/></label>
+                <label>Revenue work hrs <input id="qcRevenueWork" type="number" step="0.5" min="0" max="16" placeholder="3"/></label>
+              </div>
+              <div class="qc-row">
+                <label class="checkbox"><input id="qcWorkout" type="checkbox"/> Workout done</label>
+                <label>Energy <input id="qcEnergy" type="number" min="1" max="10" placeholder="1-10"/></label>
+              </div>
+              <div class="qc-row">
+                <label>Screen time (min) <input id="qcScreenTime" type="number" min="0" max="1440" placeholder="120"/></label>
+                <label>Caffeine (mg) <input id="qcCaffeine" type="number" min="0" max="1000" placeholder="200"/></label>
+              </div>
+              <button id="quickCheckinSave" class="primary" style="margin-top:8px;">Save Quick Check-In</button>
+            </div>
+          </section>
+        </div>
+
+        <!-- Slip Mode Panel (shown when active) -->
+        <section id="slipModePanel" class="panel slip-panel hidden">
+          <div class="slip-header">
+            <h2>Slip Detected</h2>
+            <button id="slipDismiss" class="small">Dismiss</button>
+          </div>
+          <div id="slipTriggers" class="slip-triggers"></div>
+          <div id="slipPlan" class="slip-plan"></div>
+        </section>
+
+        <!-- Seed data button for dev -->
+        <section class="panel" style="opacity:0.6">
+          <div class="inline">
+            <button id="seedDataBtn">Load Sample Data</button>
+            <button id="clearDataBtn" class="danger">Clear All Data</button>
+            <span class="muted">Development tools — generates 30 days of sample data</span>
+          </div>
+        </section>
+      </div>
+
+      <!-- TAB: Calendar + Tasks -->
+      <div id="tabCalendar" class="tab-content">
+        <section class="panel">
+          <div class="cal-controls">
+            <button id="calPrev" class="small">&larr;</button>
+            <h2 id="calMonthLabel"></h2>
+            <button id="calNext" class="small">&rarr;</button>
+            <div class="cal-view-toggle">
+              <button class="cal-view-btn active" data-view="month">Month</button>
+              <button class="cal-view-btn" data-view="week">Week</button>
+            </div>
+          </div>
+          <div id="calendarGrid" class="calendar-grid"></div>
+        </section>
+
+        <!-- Day Detail Panel -->
+        <section id="dayDetailPanel" class="panel hidden">
+          <div class="day-detail-header">
+            <h2 id="dayDetailDate"></h2>
+            <div id="dayDetailScore" class="badge"></div>
+          </div>
+
+          <h3>Critical Outcomes</h3>
+          <div id="dayOutcomes" class="outcomes-list"></div>
+          <div class="inline" style="margin-top:8px">
+            <input id="addOutcomeInput" placeholder="Add critical outcome..." />
+            <button id="addOutcomeBtn" class="primary small">Add</button>
+          </div>
+
+          <h3>Tasks</h3>
+          <div id="dayTaskList" class="task-list"></div>
+          <div class="task-form" id="taskForm">
+            <input id="tfTitle" placeholder="Task title..." />
+            <div class="tf-row">
+              <select id="tfPriority">
+                <option value="Must Do">Must Do</option>
+                <option value="Should Do" selected>Should Do</option>
+                <option value="Nice to Do">Nice to Do</option>
+                <option value="Delegate">Delegate</option>
+              </select>
+              <select id="tfCategory">
+                <option value="Deep Work">Deep Work</option>
+                <option value="Revenue Work">Revenue Work</option>
+                <option value="Product">Product</option>
+                <option value="Content">Content</option>
+                <option value="Tactical Work" selected>Tactical Work</option>
+                <option value="Admin">Admin</option>
+                <option value="School">School</option>
+                <option value="Health">Health</option>
+                <option value="Personal">Personal</option>
+                <option value="Recovery">Recovery</option>
+              </select>
+              <select id="tfLeverage">
+                <option value="High Leverage">High Leverage</option>
+                <option value="Medium Leverage" selected>Medium Leverage</option>
+                <option value="Low Leverage">Low Leverage</option>
+              </select>
+            </div>
+            <div class="tf-row">
+              <input id="tfDuration" type="number" placeholder="Est. min" min="5" max="480" style="width:100px"/>
+            </div>
+            <button id="tfAddTask" class="primary">Add Task</button>
+          </div>
+        </section>
+      </div>
+
+      <!-- TAB: Daily Check-In -->
+      <div id="tabCheckin" class="tab-content">
+        <section class="panel">
+          <div class="checkin-header">
+            <h2>Daily Performance Check-In</h2>
+            <div class="inline">
+              <label>Date <input id="ciDate" type="date" /></label>
+              <button id="ciLoadDay" class="small">Load</button>
+            </div>
+          </div>
+
+          <div class="checkin-grid">
+            <!-- Sleep -->
+            <div class="ci-section">
+              <h3>Sleep</h3>
+              <div class="ci-fields">
+                <label>Hours <input id="ciSleepHours" type="number" step="0.5" min="0" max="14"/></label>
+                <label>Quality (1-10) <input id="ciSleepQuality" type="number" min="1" max="10"/></label>
+                <label>Sleep start <input id="ciSleepStart" type="time"/></label>
+                <label>Sleep end <input id="ciSleepEnd" type="time"/></label>
+              </div>
+            </div>
+
+            <!-- Work -->
+            <div class="ci-section">
+              <h3>Work / Performance</h3>
+              <div class="ci-fields">
+                <label>Deep work hours <input id="ciDeepWork" type="number" step="0.5" min="0" max="16"/></label>
+                <label>Productive hours <input id="ciProductiveHours" type="number" step="0.5" min="0" max="24"/></label>
+                <label>Revenue work hours <input id="ciRevenueWork" type="number" step="0.5" min="0" max="16"/></label>
+                <label>First productive block <input id="ciFirstBlock" type="time"/></label>
+                <label>Execution quality (1-10) <input id="ciExecQuality" type="number" min="1" max="10"/></label>
+                <label>Self-trust (1-10) <input id="ciSelfTrust" type="number" min="1" max="10"/></label>
+              </div>
+            </div>
+
+            <!-- Workout -->
+            <div class="ci-section">
+              <h3>Workout / Body</h3>
+              <div class="ci-fields">
+                <label class="checkbox"><input id="ciWorkoutDone" type="checkbox"/> Workout completed</label>
+                <label>Type
+                  <select id="ciWorkoutType">
+                    <option value="">--</option>
+                    <option value="strength">Strength</option>
+                    <option value="cardio">Cardio</option>
+                    <option value="yoga">Yoga</option>
+                    <option value="walk">Walk</option>
+                    <option value="HIIT">HIIT</option>
+                    <option value="swimming">Swimming</option>
+                    <option value="other">Other</option>
+                  </select>
+                </label>
+                <label>Duration (min) <input id="ciWorkoutDuration" type="number" min="0" max="300"/></label>
+                <label>Energy (1-10) <input id="ciEnergy" type="number" min="1" max="10"/></label>
+              </div>
+            </div>
+
+            <!-- Dopamine -->
+            <div class="ci-section">
+              <h3>Dopamine / Discipline</h3>
+              <div class="ci-fields">
+                <label>Screen time (min) <input id="ciScreenTime" type="number" min="0" max="1440"/></label>
+                <label>Distraction time (min) <input id="ciDistractionTime" type="number" min="0" max="1440"/></label>
+                <label>Caffeine total (mg) <input id="ciCaffeineMg" type="number" min="0" max="1000"/></label>
+                <label class="checkbox"><input id="ciLateCaffeine" type="checkbox"/> Late caffeine</label>
+                <label>Discipline (1-10) <input id="ciDiscipline" type="number" min="1" max="10"/></label>
+              </div>
+            </div>
+
+            <!-- Mood -->
+            <div class="ci-section">
+              <h3>Mood / Stability</h3>
+              <div class="ci-fields">
+                <label>Mood stability (1-10) <input id="ciMoodStability" type="number" min="1" max="10"/></label>
+                <div class="chip-group">
+                  <label class="muted">Emotional state</label>
+                  <div id="ciEmotionChips" class="chips">
+                    <button class="chip" data-tag="grounded">grounded</button>
+                    <button class="chip" data-tag="sharp">sharp</button>
+                    <button class="chip" data-tag="driven">driven</button>
+                    <button class="chip" data-tag="calm">calm</button>
+                    <button class="chip" data-tag="restless">restless</button>
+                    <button class="chip" data-tag="overwhelmed">overwhelmed</button>
+                    <button class="chip" data-tag="discouraged">discouraged</button>
+                    <button class="chip" data-tag="numb">numb</button>
+                    <button class="chip" data-tag="scattered">scattered</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Shutdown -->
+            <div class="ci-section">
+              <h3>Shutdown Quality</h3>
+              <div class="ci-fields">
+                <label>Shutdown quality (1-10) <input id="ciShutdownQuality" type="number" min="1" max="10"/></label>
+              </div>
+            </div>
+
+            <!-- Discipline Breaks -->
+            <div class="ci-section">
+              <h3>Why Discipline Broke</h3>
+              <div id="ciDisciplineChips" class="chips">
+                <button class="chip" data-reason="tired">tired</button>
+                <button class="chip" data-reason="overstimulated">overstimulated</button>
+                <button class="chip" data-reason="anxious">anxious</button>
+                <button class="chip" data-reason="unclear priorities">unclear priorities</button>
+                <button class="chip" data-reason="emotionally off">emotionally off</button>
+                <button class="chip" data-reason="environment distracted me">distracted</button>
+                <button class="chip" data-reason="avoiding hard task">avoiding</button>
+                <button class="chip" data-reason="unrealistic plan">unrealistic plan</button>
+                <button class="chip" data-reason="poor sleep">poor sleep</button>
+              </div>
+            </div>
+
+            <!-- Reflection -->
+            <div class="ci-section ci-reflection">
+              <h3>Reflection</h3>
+              <div class="ci-fields">
+                <label>What strengthened me <textarea id="ciStrengthened" rows="2"></textarea></label>
+                <label>What weakened me <textarea id="ciWeakened" rows="2"></textarea></label>
+                <label>What did I avoid <textarea id="ciAvoided" rows="2"></textarea></label>
+                <label>What mattered most <textarea id="ciMattered" rows="2"></textarea></label>
+                <label>What should change tomorrow <textarea id="ciTomorrow" rows="2"></textarea></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="ci-actions">
+            <button id="ciSave" class="primary">Save Check-In</button>
+            <span id="ciSaveStatus" class="muted"></span>
+          </div>
+        </section>
+      </div>
+
+      <!-- TAB: Analytics -->
+      <div id="tabAnalytics" class="tab-content">
+        <!-- Score Overview -->
+        <section class="panel">
+          <h2>Momentum Analytics</h2>
+          <div class="analytics-summary" id="analyticsSummary">
+            <div class="as-card">
+              <div class="as-label">7-Day Avg</div>
+              <div id="asWeeklyAvg" class="as-value">--</div>
+            </div>
+            <div class="as-card">
+              <div class="as-label">30-Day Avg</div>
+              <div id="asMonthlyAvg" class="as-value">--</div>
+            </div>
+            <div class="as-card">
+              <div class="as-label">Days Won (7d)</div>
+              <div id="asDaysWon" class="as-value">--</div>
+            </div>
+            <div class="as-card">
+              <div class="as-label">Current Streak</div>
+              <div id="asStreak" class="as-value">--</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Momentum Trend -->
+        <section class="panel">
+          <h2>Momentum Trend</h2>
+          <div class="chart-container">
+            <canvas id="chartMomentum"></canvas>
+          </div>
+        </section>
+
+        <!-- Charts Row -->
+        <div class="grid two">
+          <section class="panel">
+            <h2>Deep Work</h2>
+            <div class="chart-container"><canvas id="chartDeepWork"></canvas></div>
+          </section>
+          <section class="panel">
+            <h2>Sleep Quality</h2>
+            <div class="chart-container"><canvas id="chartSleep"></canvas></div>
+          </section>
+        </div>
+
+        <div class="grid two">
+          <section class="panel">
+            <h2>Screen Time</h2>
+            <div class="chart-container"><canvas id="chartScreenTime"></canvas></div>
+          </section>
+          <section class="panel">
+            <h2>Planned vs Completed</h2>
+            <div class="chart-container"><canvas id="chartPlannedDone"></canvas></div>
+          </section>
+        </div>
+
+        <!-- Streaks -->
+        <section class="panel">
+          <h2>Streaks</h2>
+          <div id="streakCards" class="streak-cards"></div>
+        </section>
+
+        <!-- Insights -->
+        <section class="panel">
+          <h2>Pattern Insights</h2>
+          <div id="insightsList" class="insights-list"></div>
+        </section>
+
+        <!-- Correlations -->
+        <section class="panel">
+          <h2>Correlations</h2>
+          <div id="correlationsList" class="correlations-list"></div>
+        </section>
+
+        <!-- Discipline Break Patterns -->
+        <section class="panel">
+          <h2>Why Discipline Breaks</h2>
+          <div id="disciplineBreaks" class="discipline-breaks"></div>
+        </section>
+      </div>
+
+      <!-- TAB: Advisor -->
+      <div id="tabAdvisor" class="tab-content">
+        <section class="panel">
+          <h2>Performance Advisor</h2>
+          <p class="muted">LLM-powered analysis. Prompts are generated from your data — copy and paste into your preferred AI.</p>
+          <div class="advisor-actions">
+            <button id="advDailyReview" class="primary">Generate Daily Review Prompt</button>
+            <button id="advTomorrowPlan">Generate Tomorrow Plan Prompt</button>
+            <button id="advWeeklyReport">Generate Weekly Report Prompt</button>
+            <button id="advSlipMode">Generate Slip Recovery Prompt</button>
+          </div>
+        </section>
+
+        <section id="advisorOutput" class="panel hidden">
+          <div class="advisor-output-header">
+            <h2 id="advOutputTitle">Prompt</h2>
+            <button id="advCopy" class="small">Copy to Clipboard</button>
+          </div>
+          <div class="advisor-prompt-sections">
+            <div class="advisor-section">
+              <h3>System Prompt</h3>
+              <pre id="advSystemPrompt" class="prompt-block"></pre>
+            </div>
+            <div class="advisor-section">
+              <h3>User Prompt</h3>
+              <pre id="advUserPrompt" class="prompt-block"></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- Weekly Report Display -->
+        <section id="weeklyReportPanel" class="panel hidden">
+          <h2>Latest Weekly Report</h2>
+          <div id="weeklyReportContent"></div>
+        </section>
+      </div>
+    </main>
+
+    <script src="../node_modules/chart.js/dist/chart.umd.js"></script>
+    <script src="./momentum.js"></script>
+  </body>
+</html>
